@@ -4,6 +4,7 @@
   "private": true,
   "author": "Antonella Santangelo",
   "dependencies": {
+    "history": "^4.7.2",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",

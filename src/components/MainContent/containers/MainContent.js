@@ -5,6 +5,7 @@ import { surveyInit } from '../../../actions/surveyInit';
 
 const mapStateToProps = state => ({
   currentIndex: state.currentIndex,
+  currentPage: state.currentPage,
   question: state.question
 });
 

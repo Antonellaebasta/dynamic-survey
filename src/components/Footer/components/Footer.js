@@ -22,18 +22,15 @@ const Wrapper = styled.div`
 
 const ButtonsWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: space-around;
-  
-  @media ${DESKTOP} {
-    flex-direction: row;
-  }
+  align-items: center;
 `;
 
 const NavigationButton = styled.button`
+  outline: none;
   font-size: 18px;
   font-weight: bold;
-  width: 200px;
+  width: 130px;
   height: 47px;
   border: 2px solid ${COLORS.PURPLE};
   color: ${COLORS.PURPLE};
@@ -47,13 +44,18 @@ const NavigationButton = styled.button`
     color: ${COLORS.WHITE};
     background-color: ${COLORS.PURPLE};
   }
+  
+  @media ${DESKTOP} {
+    width: 200px;
+  }
 `;
 
 class Footer extends React.Component {
   handleButtonClick = p => {
-    const { surveyUpdate } = this.props;
+    const { surveyUpdate, currentPage, currentIndex } = this.props;
 
     surveyUpdate({currentIndex: p, currentPage: SURVEY_STEPS[p].name, question: SURVEY_STEPS[p].question});
+    window.history.pushState({currentIndex: p, currentPage: SURVEY_STEPS[p].name}, `page${p}`,  `/${currentPage}`);
   };
 
   render() {

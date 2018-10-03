@@ -1,13 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-//import logo from './logo.svg';
 import { DESKTOP } from './constants';
 import './App.css';
 import Header from "./components/Header";
 import Footer from "./components/Footer/containers/Footer";
 import MainContent from "./components/MainContent/containers/MainContent";
-
-/*<img src={logo} className="App-logo" alt="logo" />*/
 
 const MainWrapper = styled.div`
   /* Start fallback for non-supporting-grid browsers */

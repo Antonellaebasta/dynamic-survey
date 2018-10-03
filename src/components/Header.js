@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { DESKTOP, COLORS } from '../constants';
-//import logo from '../../logo.svg';
 
 const Wrapper = styled.div`
   /* Start fallback for non-supporting-grid browsers */
