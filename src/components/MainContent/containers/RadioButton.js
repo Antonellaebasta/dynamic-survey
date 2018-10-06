@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import Footer from '../components/Footer';
-import { surveyUpdate } from '../../../actions/surveyUpdate';
+import RadioButton from '../components/RadioButton';
+import {surveyUpdate} from "../../../actions/surveyUpdate";
 
 const mapStateToProps = state => ({
   surveyObj: state
@@ -13,4 +13,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Footer);
+)(RadioButton);

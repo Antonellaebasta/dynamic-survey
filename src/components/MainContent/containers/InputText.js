@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import Footer from '../components/Footer';
-import { surveyUpdate } from '../../../actions/surveyUpdate';
+import InputText from '../components/InputText';
+import {surveyUpdate} from "../../../actions/surveyUpdate";
+//import {INITIAL_STATE} from "../../../store/constants";
 
 const mapStateToProps = state => ({
   surveyObj: state
@@ -13,4 +14,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Footer);
+)(InputText);

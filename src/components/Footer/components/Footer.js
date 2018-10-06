@@ -52,15 +52,15 @@ const NavigationButton = styled.button`
 
 class Footer extends React.Component {
   handleButtonClick = p => {
-    const { surveyUpdate } = this.props;
+    const { surveyUpdate, surveyObj } = this.props;
     const { name, question } = SURVEY_STEPS[p];
 
-    surveyUpdate({currentIndex: p, currentView: name, question: question});
+    surveyUpdate({...surveyObj, currentIndex: p, currentView: name, question: question});
     window.history.pushState({currentIndex: p, currentView: name}, `page${p}`,  `/${name}`);
   };
 
   render() {
-    const { currentView, currentIndex } = this.props;
+    const { surveyObj: {currentView, currentIndex} } = this.props;
     return (
         <Wrapper>
           <ButtonsWrapper>
@@ -75,8 +75,7 @@ class Footer extends React.Component {
 
 Footer.propTypes = {
   surveyUpdate: PropTypes.func,
-  currentView: PropTypes.string.isRequired,
-  currentIndex: PropTypes.number.isRequired
+  surveyObj: PropTypes.object.isRequired
 };
 
 Footer.defaultProps = {

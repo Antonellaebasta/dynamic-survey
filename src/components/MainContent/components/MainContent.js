@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import AgeView from './AgeView';
-import GenderView from './GenderView';
-import NeedsView from './NeedsView';
-import UserExperienceView from './UserExperienceView';
-import LookAndFeelView from './LookAndFeelView';
-import CommentsView from './CommentsView';
+import InputText from '../containers/InputText';
+import Select from '../containers/Select';
+import RadioButton from '../containers/RadioButton';
 import { COLORS } from "../../../constants";
 import {SURVEY_STEPS, VIEW} from "../../../store/constants";
 
@@ -49,34 +46,31 @@ const InnerProgressBar = styled.div`
 class MainContent extends React.Component {
 
   componentDidMount() {
-    const { surveyInit, currentIndex, currentView } = this.props;
+    const { surveyInit, surveyObj } = this.props;
 
     surveyInit();
-    window.history.pushState({currentIndex, currentView}, `page${currentIndex}`,  `/${currentView}`);
+    window.history.pushState({surveyObj}, `page${surveyObj.currentIndex}`,  `/${surveyObj.currentView}`);
     window.addEventListener('popstate', this.onPopState);
   }
 
   onPopState = event => {
-    const { surveyUpdate } = this.props;
-    const { currentIndex, currentView } = event.state;
+    const { surveyUpdate, surveyObj } = this.props;
+    const { currentIndex, currentView, surveyData } = event.state;
 
-    surveyUpdate({currentIndex, currentView, question: SURVEY_STEPS[currentIndex].question});
+    surveyUpdate({...surveyObj, currentIndex, currentView, question: SURVEY_STEPS[currentIndex].question, surveyData});
   };
 
   getAnswerComponent = currentView => {
     switch (currentView) {
       case VIEW.AGE:
-        return AgeView;
-      case VIEW.GENDER:
-        return GenderView;
-      case VIEW.NEEDS:
-        return NeedsView;
-      case VIEW.USER_EXPERIENCE:
-        return UserExperienceView;
-      case VIEW.LOOK_AND_FEEL:
-        return LookAndFeelView;
       case VIEW.COMMENTS:
-        return CommentsView;
+        return InputText;
+      case VIEW.GENDER:
+        return Select;
+      case VIEW.NEEDS:
+      case VIEW.USER_EXPERIENCE:
+      case VIEW.LOOK_AND_FEEL:
+        return RadioButton;
       default:
         throw new Error(`No view defined for ${currentView}`)
     }
@@ -84,7 +78,7 @@ class MainContent extends React.Component {
 
 
   render() {
-    const { currentIndex, currentView, question } = this.props;
+    const { surveyObj: {currentIndex, currentView, question} } = this.props;
     const Answer = this.getAnswerComponent(currentView);
     return (
         <Wrapper>
@@ -101,9 +95,7 @@ class MainContent extends React.Component {
 }
 
 MainContent.propTypes = {
-  currentIndex: PropTypes.number.isRequired,
-  currentView: PropTypes.string.isRequired,
-  question: PropTypes.string.isRequired
+  surveyObj: PropTypes.object.isRequired
 };
 
 MainContent.defaultProps = {

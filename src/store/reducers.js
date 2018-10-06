@@ -6,7 +6,8 @@ const surveyReducers = (state = INITIAL_STATE, action) => {
     case SURVEY_INIT:
       return INITIAL_STATE;
     case SURVEY_UPDATE:
-      return {...INITIAL_STATE, currentIndex: action.currentIndex, currentView: action.currentView, question: action.question};
+      console.log(action);
+      return {...INITIAL_STATE, currentIndex: action.currentIndex, currentView: action.currentView, question: action.question, surveyData: action.surveyData};
     default:
       return state;
   }
