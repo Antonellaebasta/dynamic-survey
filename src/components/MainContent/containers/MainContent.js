@@ -1,16 +1,18 @@
 import { connect } from 'react-redux';
 import MainContent from '../components/MainContent';
 import { surveyInit } from '../../../actions/surveyInit';
+import {surveyUpdate} from "../../../actions/surveyUpdate";
 //import {INITIAL_STATE} from "../../../store/constants";
 
 const mapStateToProps = state => ({
   currentIndex: state.currentIndex,
-  currentPage: state.currentPage,
+  currentView: state.currentView,
   question: state.question
 });
 
 const mapDispatchToProps = dispatch => ({
-  surveyInit: () => dispatch(surveyInit())
+  surveyInit: () => dispatch(surveyInit()),
+  surveyUpdate: d => dispatch(surveyUpdate(d))
 });
 
 export default connect(

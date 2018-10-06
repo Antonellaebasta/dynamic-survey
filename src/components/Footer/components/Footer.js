@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { DESKTOP, COLORS } from '../../../constants';
-import { SURVEY_STEPS, PAGES } from '../../../store/constants';
+import { SURVEY_STEPS, VIEW } from '../../../store/constants';
 
 const Wrapper = styled.div`
   /* Start fallback for non-supporting-grid browsers */
@@ -52,20 +52,21 @@ const NavigationButton = styled.button`
 
 class Footer extends React.Component {
   handleButtonClick = p => {
-    const { surveyUpdate, currentPage, currentIndex } = this.props;
+    const { surveyUpdate } = this.props;
+    const { name, question } = SURVEY_STEPS[p];
 
-    surveyUpdate({currentIndex: p, currentPage: SURVEY_STEPS[p].name, question: SURVEY_STEPS[p].question});
-    window.history.pushState({currentIndex: p, currentPage: SURVEY_STEPS[p].name}, `page${p}`,  `/${currentPage}`);
+    surveyUpdate({currentIndex: p, currentView: name, question: question});
+    window.history.pushState({currentIndex: p, currentView: name}, `page${p}`,  `/${name}`);
   };
 
   render() {
-    const { currentPage, currentIndex } = this.props;
+    const { currentView, currentIndex } = this.props;
     return (
         <Wrapper>
           <ButtonsWrapper>
-            {currentPage !== PAGES.AGE && <NavigationButton onClick={() => this.handleButtonClick(currentIndex - 1)}>Prev</NavigationButton>}
-            {currentPage !== PAGES.COMMENTS && <NavigationButton onClick={() => this.handleButtonClick(currentIndex + 1)}>Next</NavigationButton>}
-            {currentPage === PAGES.COMMENTS && <NavigationButton>Send Survey</NavigationButton>}
+            {currentView !== VIEW.AGE && <NavigationButton onClick={() => this.handleButtonClick(currentIndex - 1)}>Prev</NavigationButton>}
+            {currentView !== VIEW.COMMENTS && <NavigationButton onClick={() => this.handleButtonClick(currentIndex + 1)}>Next</NavigationButton>}
+            {currentView === VIEW.COMMENTS && <NavigationButton>Send Survey</NavigationButton>}
           </ButtonsWrapper>
         </Wrapper>
     )
@@ -74,7 +75,7 @@ class Footer extends React.Component {
 
 Footer.propTypes = {
   surveyUpdate: PropTypes.func,
-  currentPage: PropTypes.string.isRequired,
+  currentView: PropTypes.string.isRequired,
   currentIndex: PropTypes.number.isRequired
 };
 

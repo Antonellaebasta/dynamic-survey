@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import AgeView from './AgeView';
+import GenderView from './GenderView';
+import NeedsView from './NeedsView';
+import UserExperienceView from './UserExperienceView';
+import LookAndFeelView from './LookAndFeelView';
+import CommentsView from './CommentsView';
 import { COLORS } from "../../../constants";
-import {SURVEY_STEPS} from "../../../store/constants";
+import {SURVEY_STEPS, VIEW} from "../../../store/constants";
 
 const Wrapper = styled.div`
   /* Start fallback for non-supporting-grid browsers */
@@ -21,6 +27,7 @@ const Wrapper = styled.div`
 
 const Question = styled.h3`
   color: ${COLORS.DARK_GREY};
+  margin-bottom: 50px;
 `;
 
 const ProgressBar = styled.div`
@@ -40,16 +47,45 @@ const InnerProgressBar = styled.div`
 `;
 
 class MainContent extends React.Component {
+
   componentDidMount() {
-    const { currentPage, currentIndex, surveyInit } = this.props;
-    const stateObj = { currentPage, currentIndex };
+    const { surveyInit, currentIndex, currentView } = this.props;
+
     surveyInit();
-    window.history.pushState({ stateObj }, `page${currentIndex}`,  `/${currentPage}`);
+    window.history.pushState({currentIndex, currentView}, `page${currentIndex}`,  `/${currentView}`);
+    window.addEventListener('popstate', this.onPopState);
   }
 
-  render() {
-    const { currentIndex, question } = this.props;
+  onPopState = event => {
+    const { surveyUpdate } = this.props;
+    const { currentIndex, currentView } = event.state;
 
+    surveyUpdate({currentIndex, currentView, question: SURVEY_STEPS[currentIndex].question});
+  };
+
+  getAnswerComponent = currentView => {
+    switch (currentView) {
+      case VIEW.AGE:
+        return AgeView;
+      case VIEW.GENDER:
+        return GenderView;
+      case VIEW.NEEDS:
+        return NeedsView;
+      case VIEW.USER_EXPERIENCE:
+        return UserExperienceView;
+      case VIEW.LOOK_AND_FEEL:
+        return LookAndFeelView;
+      case VIEW.COMMENTS:
+        return CommentsView;
+      default:
+        throw new Error(`No view defined for ${currentView}`)
+    }
+  };
+
+
+  render() {
+    const { currentIndex, currentView, question } = this.props;
+    const Answer = this.getAnswerComponent(currentView);
     return (
         <Wrapper>
           <ProgressBar>
@@ -58,6 +94,7 @@ class MainContent extends React.Component {
           <Question>
             {currentIndex + 1}. {question}
           </Question>
+          <Answer {...this.props} />
         </Wrapper>
     );
   }
@@ -65,7 +102,7 @@ class MainContent extends React.Component {
 
 MainContent.propTypes = {
   currentIndex: PropTypes.number.isRequired,
-  currentPage: PropTypes.string.isRequired,
+  currentView: PropTypes.string.isRequired,
   question: PropTypes.string.isRequired
 };
 

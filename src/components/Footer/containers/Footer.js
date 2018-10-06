@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 import { surveyUpdate } from '../../../actions/surveyUpdate';
 
 const mapStateToProps = state => ({
-  currentPage: state.currentPage,
+  currentView: state.currentView,
   currentIndex: state.currentIndex
 });
 
