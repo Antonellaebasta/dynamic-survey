@@ -1,6 +1,8 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Dynamic survey realized with React, Redux, History API - to _route_ without React Router, just using pushState browser API -, Styled-Component, Jest and Enzyme for testing.
 
 In the project directory, you can run:
+
+### `yarn install`
 
 ### `yarn start`
 
@@ -59,6 +61,5 @@ my-app/
 ## Supported Browsers
 
 By default, the generated project supports all modern browsers.<br>
-Support for Internet Explorer 9, 10, and 11 requires [polyfills](https://github.com/facebook/create-react-app/blob/master/packages/react-app-polyfill/README.md).
 
 
