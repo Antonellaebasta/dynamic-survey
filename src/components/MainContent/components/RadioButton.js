@@ -5,15 +5,27 @@ import { COLORS } from "../../../constants";
 import {ANSWER_OPTIONS} from "../../../store/constants";
 
 const RadioGroup = styled.div`
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const RadioWrapper = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 8px 0;
 `;
 
 const Option = styled.input`
-  width: 100%;
   margin: 10px;
   padding: 7px 0 8px;
   border: none;
   outline: none;
+  color: ${COLORS.DARK_GREY};
+  font-size: 16px;
+`;
+
+const Label = styled.span`
   color: ${COLORS.DARK_GREY};
   font-size: 16px;
 `;
@@ -23,15 +35,21 @@ class RadioButton extends React.Component {
   handleChange = event => {
     const { surveyUpdate, surveyObj } = this.props;
     const key = surveyObj.currentView;
+
     surveyUpdate({ ...surveyObj, surveyData: {...surveyObj.surveyData, [key]: event.target.value} });
   };
 
   render() {
-    const { surveyObj: {currentView} } = this.props;
+    const { surveyObj: { currentView, surveyData } } = this.props;
 
     return (
-        <RadioGroup name={currentView} onChange={this.handleChange}>
-          {ANSWER_OPTIONS[currentView].map((option, index) => <Option key={index} type="radio" value={option} /> )}
+        <RadioGroup>
+          {ANSWER_OPTIONS[currentView].map((option, index) => (
+              <RadioWrapper key={`${currentView}-${index}`} name={currentView}>
+                <Option type="radio" id={`${currentView}-${index}`} name={currentView} value ={option} checked={option===surveyData[currentView]} onChange={this.handleChange} />
+                <Label htmlFor={option}>{option}</Label>
+              </RadioWrapper>
+          ))}
         </RadioGroup>
     );
   }

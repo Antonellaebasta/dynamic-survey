@@ -1,46 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { COLORS } from "../../../constants";
+import { COLORS, DESKTOP } from "../../../constants";
 import { ANSWER_OPTIONS } from '../../../store/constants';
 
 const SelectWrapper = styled.select`
   width: 100%;
+  min-height: 34px;
   margin: 0;
-  padding: 7px 0 8px;
+  padding: 8px;
   border: none;
   outline: none;
-  border-bottom: 1px solid ${COLORS.YELLOW};
+  appearance: none;
+  border-radius: 0;
+  border-bottom: 2px solid ${COLORS.YELLOW};
+  background-color: transparent;
   color: ${COLORS.DARK_GREY};
   font-size: 16px;
-`;
-
-const Option = styled.option`
-  width: 100%;
-  margin: 0;
-  padding: 7px 0 8px;
-  border: none;
-  outline: none;
-  border-bottom: 1px solid ${COLORS.YELLOW};
-  color: ${COLORS.DARK_GREY};
-  font-size: 16px;
+  cursor: pointer;
+  
+  @media ${DESKTOP} {
+    width: 50%;
+  }
 `;
 
 class Select extends React.Component {
-
   handleChange = event => {
     const { surveyUpdate, surveyObj } = this.props;
     const key = surveyObj.currentView;
+
     surveyUpdate({ ...surveyObj, surveyData: {...surveyObj.surveyData, [key]: event.target.value} });
   };
 
   render() {
-    const { surveyObj: { currentView } } = this.props;
-    const placeholder = `Select ${currentView}`;
+    const { surveyObj: { currentView, surveyData } } = this.props;
+    const optionSelected = surveyData[currentView] || `Select your ${currentView}`;
 
     return (
-        <SelectWrapper placeholder={placeholder} onChange={this.handleChange}>
-          {ANSWER_OPTIONS[currentView].map((option, index) => (<Option key={index} value={option}>{option}</Option>))}
+        <SelectWrapper onChange={this.handleChange}>
+          <option value={optionSelected}>{optionSelected}</option>
+          {ANSWER_OPTIONS[currentView].map((option, index) => (<option key={index} value={option}>{option}</option>))}
         </SelectWrapper>
     );
   }

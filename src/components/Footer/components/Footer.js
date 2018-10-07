@@ -32,17 +32,17 @@ const NavigationButton = styled.button`
   font-weight: bold;
   width: 130px;
   height: 47px;
-  border: 2px solid ${COLORS.PURPLE};
-  color: ${COLORS.PURPLE};
-  background-color: transparent;
+  border: 2px solid ${props => props.disabled ? COLORS.GREY : COLORS.PURPLE};
+  color: ${props => props.disabled ? COLORS.WHITE : COLORS.PURPLE};
+  background-color: ${props => props.disabled ? COLORS.GREY : 'transparent'};
   box-shadow: none;
   border-radius: 8px;
-  cursor: pointer;
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   transition: all 0.1s ease-in-out;
   
   &:hover {
     color: ${COLORS.WHITE};
-    background-color: ${COLORS.PURPLE};
+    background-color: ${props => props.disabled ? COLORS.GREY : COLORS.PURPLE};;
   }
   
   @media ${DESKTOP} {
@@ -53,25 +53,28 @@ const NavigationButton = styled.button`
 class Footer extends React.Component {
   handleButtonClick = p => {
     const { surveyUpdate, surveyObj } = this.props;
-    const { name, question } = SURVEY_STEPS[p];
+    const { name, text } = SURVEY_STEPS[p];
 
-    surveyUpdate({...surveyObj, currentIndex: p, currentView: name, question: question});
-    window.history.pushState({currentIndex: p, currentView: name}, `page${p}`,  `/${name}`);
+    surveyUpdate({...surveyObj, currentIndex: p, currentView: name, text});
+    window.history.pushState({...surveyObj, currentIndex: p, currentView: name, text}, `page${p}`,  `/${name}`);
   };
 
   render() {
-    const { surveyObj: {currentView, currentIndex} } = this.props;
+    const { surveyObj: {currentView, currentIndex, surveyData} } = this.props;
+    const isDisabled = !surveyData[currentView];
+    const nextButtonText = currentView === VIEW.COMMENTS ? 'Send Survey' : 'Next';
+
     return (
         <Wrapper>
+          {currentView !== VIEW.SUMMARY &&
           <ButtonsWrapper>
             {currentView !== VIEW.AGE && <NavigationButton onClick={() => this.handleButtonClick(currentIndex - 1)}>Prev</NavigationButton>}
-            {currentView !== VIEW.COMMENTS && <NavigationButton onClick={() => this.handleButtonClick(currentIndex + 1)}>Next</NavigationButton>}
-            {currentView === VIEW.COMMENTS && <NavigationButton>Send Survey</NavigationButton>}
-          </ButtonsWrapper>
+            <NavigationButton onClick={() => this.handleButtonClick(currentIndex + 1)} disabled={isDisabled}>{nextButtonText}</NavigationButton>
+          </ButtonsWrapper>}
         </Wrapper>
     )
+  }
 }
-};
 
 Footer.propTypes = {
   surveyUpdate: PropTypes.func,

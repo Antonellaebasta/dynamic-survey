@@ -4,15 +4,15 @@ import styled from 'styled-components';
 import InputText from '../containers/InputText';
 import Select from '../containers/Select';
 import RadioButton from '../containers/RadioButton';
+import Summary from '../containers/Summary';
 import { COLORS } from "../../../constants";
-import {SURVEY_STEPS, VIEW} from "../../../store/constants";
+import { VIEW } from "../../../store/constants";
 
 const Wrapper = styled.div`
   /* Start fallback for non-supporting-grid browsers */
-  flex-basis: 60%;
+  flex-basis: 70%;
   align-items: center;
   justify-content: center;
-  text-align: center;
   padding: 20px 10px;
   /* End fallback */
 
@@ -49,15 +49,15 @@ class MainContent extends React.Component {
     const { surveyInit, surveyObj } = this.props;
 
     surveyInit();
-    window.history.pushState({surveyObj}, `page${surveyObj.currentIndex}`,  `/${surveyObj.currentView}`);
+    window.history.pushState({...surveyObj, surveyObj}, `page${surveyObj.currentIndex}`,  `/${surveyObj.currentView}`);
     window.addEventListener('popstate', this.onPopState);
   }
 
   onPopState = event => {
     const { surveyUpdate, surveyObj } = this.props;
-    const { currentIndex, currentView, surveyData } = event.state;
+    const { currentIndex, currentView, text, surveyData } = event.state;
 
-    surveyUpdate({...surveyObj, currentIndex, currentView, question: SURVEY_STEPS[currentIndex].question, surveyData});
+    surveyUpdate({...surveyObj, currentIndex, currentView, text, surveyData });
   };
 
   getAnswerComponent = currentView => {
@@ -71,22 +71,25 @@ class MainContent extends React.Component {
       case VIEW.USER_EXPERIENCE:
       case VIEW.LOOK_AND_FEEL:
         return RadioButton;
+      case VIEW.SUMMARY:
+        return Summary;
       default:
         throw new Error(`No view defined for ${currentView}`)
     }
   };
 
-
   render() {
-    const { surveyObj: {currentIndex, currentView, question} } = this.props;
+    const { surveyObj: {currentIndex, currentView, text} } = this.props;
+    const title = currentView === VIEW.SUMMARY ? text : `${currentIndex + 1} ${text}?`;
     const Answer = this.getAnswerComponent(currentView);
     return (
         <Wrapper>
+          {currentView !== VIEW.SUMMARY &&
           <ProgressBar>
             <InnerProgressBar currentIndex={currentIndex} />
-          </ProgressBar>
+          </ProgressBar>}
           <Question>
-            {currentIndex + 1}. {question}
+            {title}
           </Question>
           <Answer {...this.props} />
         </Wrapper>

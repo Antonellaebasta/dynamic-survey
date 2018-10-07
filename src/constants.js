@@ -1,5 +1,5 @@
 /* Layout breakpoint */
-export const DESKTOP = "(min-width: 601px)";
+export const DESKTOP = "(min-width: 1024px)";
 
 /* Colors */
 export const COLORS = {
