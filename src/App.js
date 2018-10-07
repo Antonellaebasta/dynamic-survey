@@ -35,7 +35,7 @@ const MainWrapper = styled.div`
   }
 `;
 
-const App = () => (
+export const App = () => (
     <MainWrapper>
       <Header/>
       <MainContent/>

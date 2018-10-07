@@ -26,7 +26,7 @@ const ButtonsWrapper = styled.div`
   align-items: center;
 `;
 
-const NavigationButton = styled.button`
+export const NavigationButton = styled.button`
   outline: none;
   font-size: 18px;
   font-weight: bold;
