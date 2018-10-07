@@ -20,7 +20,7 @@ const Input = styled.input`
   }
   
   @media ${DESKTOP} {
-    width: 50%;
+    width: 65%;
   }
 `;
 

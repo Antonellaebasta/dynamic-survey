@@ -22,12 +22,13 @@ const Option = styled.input`
   border: none;
   outline: none;
   color: ${COLORS.DARK_GREY};
-  font-size: 16px;
+  cursor: pointer;
 `;
 
-const Label = styled.span`
+const Label = styled.label`
   color: ${COLORS.DARK_GREY};
   font-size: 16px;
+  cursor: pointer;
 `;
 
 class RadioButton extends React.Component {
@@ -47,7 +48,7 @@ class RadioButton extends React.Component {
           {ANSWER_OPTIONS[currentView].map((option, index) => (
               <RadioWrapper key={`${currentView}-${index}`} name={currentView}>
                 <Option type="radio" id={`${currentView}-${index}`} name={currentView} value ={option} checked={option===surveyData[currentView]} onChange={this.handleChange} />
-                <Label htmlFor={option}>{option}</Label>
+                <Label htmlFor={`${currentView}-${index}`}>{option}</Label>
               </RadioWrapper>
           ))}
         </RadioGroup>

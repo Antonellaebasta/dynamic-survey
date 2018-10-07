@@ -80,7 +80,7 @@ class MainContent extends React.Component {
 
   render() {
     const { surveyObj: {currentIndex, currentView, text} } = this.props;
-    const title = currentView === VIEW.SUMMARY ? text : `${currentIndex + 1} ${text}?`;
+    const title = currentView === VIEW.SUMMARY ? text : `${currentIndex + 1}. ${text}?`;
     const Answer = this.getAnswerComponent(currentView);
     return (
         <Wrapper>
@@ -98,7 +98,8 @@ class MainContent extends React.Component {
 }
 
 MainContent.propTypes = {
-  surveyObj: PropTypes.object.isRequired
+  surveyObj: PropTypes.object.isRequired,
+  surveyInit: PropTypes.func
 };
 
 MainContent.defaultProps = {

@@ -20,7 +20,7 @@ const SelectWrapper = styled.select`
   cursor: pointer;
   
   @media ${DESKTOP} {
-    width: 50%;
+    width: 65%;
   }
 `;
 
